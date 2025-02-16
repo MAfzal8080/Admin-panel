@@ -24,14 +24,14 @@ export function UsersPage() {
     })
   }, [])
 
-  const blockUser = async (id: number) => {
-    console.log(id, token);
-    const block = await axios.put(`http://localhost:3000/admin/dashboard`, {
+  const stopUser = async (id: number) => {
+    console.log(id);
+    const stop = await axios.get(`http://localhost:3000/bot/block/${id}`, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
     });
-    if (block.data) {
+    if (stop?.data) {
       setUser((prevUsers) =>
         prevUsers.map((user) =>
           user.chatId === id ? { ...user, isBlock: !user.isBlock } : user
@@ -48,7 +48,7 @@ export function UsersPage() {
     if (deleted) {
       setUser(user.filter(item => item.chatId != id));
     }
-  } 
+  }
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -83,7 +83,7 @@ export function UsersPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
-                    onClick={() => blockUser(user.chatId)}
+                    onClick={() => stopUser(user.chatId)}
                     className={
                       `inline-flex items-center px-3 py-1 rounded-md text-sm font-medium mr-2
                       ${user.isBlock
